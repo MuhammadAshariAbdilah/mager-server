@@ -1,10 +1,10 @@
 const DirectoryRouter = {
   method: "GET",
-  path: "/image/{file*}",
+  path: "/directory/{file*}",
   handler: {
     directory: {
-      path: "src/image",
-      listing: true,
+      path: ".",
+      redirectToSlash: true,
     },
   },
   options: {

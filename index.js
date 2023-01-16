@@ -17,7 +17,7 @@ const init = async () => {
       host: host,
       routes: {
         files: {
-          relativeTo: Path.join(__dirname, "src/image"),
+          relativeTo: Path.join(__dirname, "./src/image"),
         },
         cors: {
           origin: ["*"],
