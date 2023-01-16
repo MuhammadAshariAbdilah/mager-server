@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const routes = require("./src/routes");
 const { AuthModel } = require("./src/models/authModel");
 const plugins = require("./src/plugins/plugins");
+const Path = require("path");
 
 const init = async () => {
   const port = process.env.PORT || 3000;
