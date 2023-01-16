@@ -16,14 +16,16 @@ const GetUserByIdHandler = async (req, h) => {
       return response;
     }
 
-    const imageUser = h.file(`./src/image/${users.gambar.link_gambar}`);
-    console.log(imageUser);
+    const res = h.file(`./src/image/${users.gambar.link_gambar}`);
+    const hostname = res.info.host;
+    const imagepath = res.source.path;
+    const url = `http://${hostname}${imagepath}`;
 
     const resUser = {
       nama_user: users.nama_user,
       status: users.status,
       alamat_rumah: users.alamat_rumah,
-      link_gambar: imageUser.source.path,
+      link_gambar: url,
       toko: users.toko,
     };
 
