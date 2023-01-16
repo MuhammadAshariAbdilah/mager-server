@@ -17,7 +17,7 @@ const GetUserByIdHandler = async (req, h) => {
     }
 
     const res = h.file(`./src/image/${users.gambar.link_gambar}`);
-    const hostname = res.info.host;
+    const hostname = res.request.info.host;
     const imagepath = res.source.path;
     const url = `http://${hostname}${imagepath}`;
 
