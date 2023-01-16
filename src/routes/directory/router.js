@@ -1,6 +1,6 @@
 const DirectoryRouter = {
   method: "GET",
-  path: "/directory/{filename*}",
+  path: "/image/{file*}",
   handler: {
     directory: {
       path: "src/image",
