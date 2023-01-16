@@ -5,6 +5,7 @@ const { GambarModel } = require("../../models/gambarModel");
 const { UserModel } = require("../../models/userModel");
 const randomChar = require("../../utils/randomChar");
 const fs = require("fs");
+const BASE_URL = require("../../config/baseurl");
 
 const SignUpHandler = async (req, h) => {
   try {
@@ -84,9 +85,11 @@ const SignUpHandler = async (req, h) => {
       users: newUserId,
     });
 
+    const generateUrlGambar = `${BASE_URL}${imageName}`;
+
     const createNewGambar = new GambarModel({
       _id: newGambarId,
-      link_gambar: imageName,
+      link_gambar: generateUrlGambar,
     });
 
     await createNewUser.save();

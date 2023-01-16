@@ -4,6 +4,7 @@ const { UserModel } = require("../../models/userModel");
 const randomChar = require("../../utils/randomChar");
 const fs = require("fs");
 const mongoose = require("mongoose");
+const BASE_URL = require("../../config/baseurl");
 
 const AddTokoHandler = async (req, h) => {
   try {
@@ -62,9 +63,11 @@ const AddTokoHandler = async (req, h) => {
         barcodes: newBarcodeId,
       });
 
+      const generateUrlGambar = `${BASE_URL}${imageName}`;
+
       const createNewBarcode = new BarcodeModel({
         _id: newBarcodeId,
-        link_gambar: imageName,
+        link_gambar: generateUrlGambar,
       });
 
       const updateUser = await UserModel.findByIdAndUpdate(

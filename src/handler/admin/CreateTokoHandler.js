@@ -4,6 +4,7 @@ const { UserModel } = require("../../models/userModel");
 const randomChar = require("../../utils/randomChar");
 const fs = require("fs");
 const mongoose = require("mongoose");
+const BASE_URL = require("../../config/baseurl");
 const CreateTokoHandler = async (req, h) => {
   try {
     const { id } = req.params;
@@ -66,11 +67,9 @@ const CreateTokoHandler = async (req, h) => {
       barcodes: newBarcodeId,
     });
 
-    console.log(`LINK IMAGE ${h.file(imageName)}`);
-
     const createNewBarcode = new BarcodeModel({
       _id: newBarcodeId,
-      link_gambar: imageName,
+      link_gambar: generateUrlGambar,
     });
 
     user.status = "Pedagang";
