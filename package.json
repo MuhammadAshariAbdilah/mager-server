@@ -5,13 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "nodemon index.js"
   },
   "author": "BFS",
   "license": "ISC",
   "dependencies": {
     "@hapi/hapi": "^20.2.1",
-    "@hapi/inert": "^6.0.5",
+    "@hapi/inert": "7.0.0",
     "@hapi/jwt": "^2.1.1",
     "@hapi/vision": "^6.1.0",
     "bcrypt": "^5.0.1",

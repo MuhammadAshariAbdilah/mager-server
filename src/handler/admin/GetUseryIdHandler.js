@@ -16,10 +16,14 @@ const GetUserByIdHandler = async (req, h) => {
       return response;
     }
 
-    const res = h.file(`./src/image/${users.gambar.link_gambar}`);
-    const hostname = res.request.info.host;
-    const imagepath = res.source.path;
-    const url = `https://${hostname}${imagepath}`;
+    // const res = h.file(`./src/image/${users.gambar.link_gambar}`);
+    // const hostname = res.request.info.host;
+    // const imagepath = res.source.path;
+
+    // const protocol = req.connection.info.protocol;
+    // const host = req.info.host;
+
+    const url = `https://real-erin-sawfish-gear.cyclic.app/directory/${users.gambar.link_gambar}`;
 
     const resUser = {
       nama_user: users.nama_user,

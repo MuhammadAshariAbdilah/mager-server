@@ -17,7 +17,7 @@ const init = async () => {
       host: host,
       routes: {
         files: {
-          relativeTo: Path.join(__dirname, "image"),
+          relativeTo: Path.join(__dirname, "./src/image"),
         },
         cors: {
           origin: ["*"],
@@ -25,9 +25,9 @@ const init = async () => {
       },
     });
 
-    await server.route(routes);
-
     await server.register(plugins);
+
+    await server.route(routes);
 
     server.auth.strategy("simple", "bearer-access-token", {
       validate: async (request, token, h) => {
