@@ -7,6 +7,9 @@ const DirectoryRouter = {
       listing: true,
     },
   },
+  options: {
+    auth: false,
+  },
 };
 
 module.exports = { DirectoryRouter };
