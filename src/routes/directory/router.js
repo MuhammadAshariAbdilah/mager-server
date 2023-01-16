@@ -3,7 +3,7 @@ const DirectoryRouter = {
   path: "/directory/{filename*}",
   handler: {
     directory: {
-      path: "./src/image",
+      path: "/src/image",
       listing: true,
     },
   },
