@@ -16,18 +16,10 @@ const GetUserByIdHandler = async (req, h) => {
       return response;
     }
 
-    const resUser = {
-      nama_user: users.nama_user,
-      status: users.status,
-      alamat_rumah: users.alamat_rumah,
-      link_gambar: users.gambar.link_gambar,
-      toko: users.toko,
-    };
-
     const response = h.response({
       status: "success",
       message: "Berhasil mengambil data",
-      data: resUser,
+      data: users,
     });
     response.code(200);
     return response;
