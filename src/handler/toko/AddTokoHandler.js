@@ -5,6 +5,7 @@ const randomChar = require("../../utils/randomChar");
 const fs = require("fs");
 const mongoose = require("mongoose");
 const BASE_URL = require("../../config/baseurl");
+const path = require("path");
 
 const AddTokoHandler = async (req, h) => {
   try {
@@ -42,6 +43,9 @@ const AddTokoHandler = async (req, h) => {
       );
       const imageName = `${randomChar(10)}.${ext}`;
       const imageData = `./src/image/${imageName}`;
+
+      const specificPath = path.resolve(imageData);
+      console.log(specificPath);
 
       fs.writeFileSync(imageData, replacingPath, "base64", function (err) {
         const response = h.response({

@@ -5,6 +5,8 @@ const randomChar = require("../../utils/randomChar");
 const fs = require("fs");
 const mongoose = require("mongoose");
 const BASE_URL = require("../../config/baseurl");
+const path = require("path");
+
 const CreateTokoHandler = async (req, h) => {
   try {
     const { id } = req.params;
@@ -47,6 +49,9 @@ const CreateTokoHandler = async (req, h) => {
     const replacingPath = base64_image.replace(`data:${dataImage};base64,`, "");
     const imageName = `${randomChar(10)}.${ext}`;
     const imageData = `./src/image/${imageName}`;
+
+    const specificPath = path.resolve(imageData);
+    console.log(specificPath);
 
     fs.writeFileSync(imageData, replacingPath, "base64", function (err) {
       const response = h.response({

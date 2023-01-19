@@ -8,7 +8,7 @@ const {
 const UserRouter = [
   {
     method: "GET",
-    path: "/listtoko",
+    path: "/listtoko/{id}",
     handler: GetListTokoKonsumenHandler,
   },
   {

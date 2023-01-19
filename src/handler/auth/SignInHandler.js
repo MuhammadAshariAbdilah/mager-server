@@ -45,6 +45,7 @@ const SignInHandler = async (req, h) => {
 
     const response = h.response({
       id_identity: auth.users._id,
+      status_pengguna: auth.users.status,
       status: "success",
       message: "Pendaftaran berhasil",
       token: token,
