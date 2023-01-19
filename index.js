@@ -11,7 +11,7 @@ const Path = require("path");
 const init = async () => {
   const port = process.env.PORT || 3000;
   const host = process.env.HOST || "0.0.0.0";
-  const pathImage = process.env.DEV === "Yes" ? "./src/image" : "/tmp";
+  const pathImage = process.env.DEV === "Yes" ? "./src/image" : "./tmp";
   try {
     const server = Hapi.server({
       port: port,
