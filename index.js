@@ -11,13 +11,14 @@ const Path = require("path");
 const init = async () => {
   const port = process.env.PORT || 3000;
   const host = process.env.HOST || "0.0.0.0";
+  const pathImage = process.env.DEV === "Yes" ? "./src/image" : "/tmp/";
   try {
     const server = Hapi.server({
       port: port,
       host: host,
       routes: {
         files: {
-          relativeTo: Path.join(__dirname, "./src/image"),
+          relativeTo: Path.join(__dirname, pathImage),
         },
         cors: {
           origin: ["*"],
