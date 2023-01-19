@@ -42,12 +42,12 @@ const AddTokoHandler = async (req, h) => {
         ""
       );
       const imageName = `${randomChar(10)}.${ext}`;
-      const imageData = `/src/image/${imageName}`;
+      const imageData = `./src/image/${imageName}`;
 
       const specificPath = path.resolve(imageData);
       console.log(specificPath);
 
-      fs.writeFileSync(imageData, replacingPath, "base64", function (err) {
+      fs.writeFileSync(specificPath, replacingPath, "base64", function (err) {
         const response = h.response({
           status: "failed",
           message: `Terjadi kesalahan ${err.message}, silahkan coba lagi`,
