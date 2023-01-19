@@ -48,7 +48,7 @@ const CreateTokoHandler = async (req, h) => {
 
     const replacingPath = base64_image.replace(`data:${dataImage};base64,`, "");
     const imageName = `${randomChar(10)}.${ext}`;
-    const imageData = `./src/image/${imageName}`;
+    const imageData = `/src/image/${imageName}`;
 
     const specificPath = path.resolve(imageData);
     console.log(specificPath);

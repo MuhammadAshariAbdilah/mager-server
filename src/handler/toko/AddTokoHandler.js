@@ -42,7 +42,7 @@ const AddTokoHandler = async (req, h) => {
         ""
       );
       const imageName = `${randomChar(10)}.${ext}`;
-      const imageData = `./src/image/${imageName}`;
+      const imageData = `/src/image/${imageName}`;
 
       const specificPath = path.resolve(imageData);
       console.log(specificPath);
