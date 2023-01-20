@@ -42,10 +42,13 @@ const AddTokoHandler = async (req, h) => {
         ""
       );
       const imageName = `${randomChar(10)}.${ext}`;
-      const imageData =
-        process.env.DEV === "Yes"
-          ? `./src/image/${imageName}`
-          : `/tmp/${imageName}`;
+
+      // const imageData =
+      //   process.env.DEV === "Yes"
+      //     ? `./src/image/${imageName}`
+      //     : `/tmp/${imageName}`;
+
+      const imageData = path.join(__dirname, `../../image/${imageName}`);
 
       fs.writeFileSync(imageData, replacingPath, "base64", function (err) {
         const response = h.response({

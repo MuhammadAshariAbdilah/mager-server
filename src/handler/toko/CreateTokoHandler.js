@@ -48,10 +48,12 @@ const CreateTokoHandler = async (req, h) => {
     const replacingPath = base64_image.replace(`data:${dataImage};base64,`, "");
     const imageName = `${randomChar(10)}.${ext}`;
 
-    const imageData =
-      process.env.DEV === "Yes"
-        ? `./src/image/${imageName}`
-        : `/tmp/${imageName}`;
+    // const imageData =
+    //   process.env.DEV === "Yes"
+    //     ? `./src/image/${imageName}`
+    //     : `/tmp/${imageName}`;
+
+    const imageData = path.join(__dirname, `../../image/${imageName}`);
 
     fs.writeFileSync(imageData, replacingPath, "base64", function (err) {
       const response = h.response({
