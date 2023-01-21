@@ -27,6 +27,12 @@ const UserModel = mongoose.model(
         ref: "Toko",
       },
     ],
+    checkout: [
+      {
+        type: String,
+        ref: "Checkout",
+      },
+    ],
   })
 );
 

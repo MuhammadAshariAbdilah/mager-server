@@ -7,5 +7,5 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => console.log("MongoDB Connected..."))
+  .then(() => console.log("MongoDB Terkoneksi"))
   .catch((err) => console.log(err));
