@@ -6,6 +6,7 @@ const fs = require("fs");
 const mongoose = require("mongoose");
 const BASE_URL = require("../../config/baseurl");
 const path = require("path");
+const { GambarModel } = require("../../models/gambarModel");
 
 const AddTokoHandler = async (req, h) => {
   try {
@@ -59,6 +60,7 @@ const AddTokoHandler = async (req, h) => {
         return response;
       });
 
+      const newGambarId = new mongoose.Types.ObjectId();
       const newBarcodeId = new mongoose.Types.ObjectId();
       const newTokoId = new mongoose.Types.ObjectId();
 
@@ -70,22 +72,27 @@ const AddTokoHandler = async (req, h) => {
         barcodes: newBarcodeId,
       });
 
-      const generateUrlGambar = `${BASE_URL}${imageName}`;
-
       const createNewBarcode = new BarcodeModel({
         _id: newBarcodeId,
+        owners_identity: `${newTokoId}|${nama_toko}`,
+      });
+
+      const generateUrlGambar = `${BASE_URL}${imageName}`;
+      const createNewImageToko = new GambarModel({
+        _id: newGambarId,
         link_gambar: generateUrlGambar,
       });
 
       const updateUser = await UserModel.findByIdAndUpdate(
         id,
-        { $push: { toko: newTokoId } },
+        { $push: { toko: newTokoId, gambar: newGambarId } },
         { new: true, useFindAndModify: false }
       );
 
       await updateUser.save();
       await createNewToko.save();
       await createNewBarcode.save();
+      await createNewImageToko.save();
 
       const response = h.response({
         status: "success",

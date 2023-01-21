@@ -5,7 +5,7 @@ const BarcodeModel = mongoose.model(
   "Barcode",
   new Schema({
     _id: Schema.Types.ObjectId,
-    link_gambar: {
+    owners_identity: {
       type: String,
       default: "",
     },

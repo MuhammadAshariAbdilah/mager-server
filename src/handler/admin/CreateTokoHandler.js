@@ -5,6 +5,8 @@ const randomChar = require("../../utils/randomChar");
 const fs = require("fs");
 const mongoose = require("mongoose");
 const BASE_URL = require("../../config/baseurl");
+const { GambarModel } = require("../../models/gambarModel");
+
 const CreateTokoHandler = async (req, h) => {
   try {
     const { id } = req.params;
@@ -23,7 +25,8 @@ const CreateTokoHandler = async (req, h) => {
     if (user.status === "Pedagang") {
       const response = h.response({
         status: "failed",
-        message: "User ini sudah pernah membuat toko pertamanya",
+        message:
+          "Anda sudah pernah membuat toko pertama, silahkan tambah toko saja",
       });
       response.code(500);
       return response;
@@ -45,7 +48,7 @@ const CreateTokoHandler = async (req, h) => {
 
     const replacingPath = base64_image.replace(`data:${dataImage};base64,`, "");
     const imageName = `${randomChar(10)}.${ext}`;
-    const imageData = `./src/image/${imageName}`;
+    const imageData = path.join(__dirname, `../../image/${imageName}`);
 
     fs.writeFileSync(imageData, replacingPath, "base64", function (err) {
       const response = h.response({
@@ -57,6 +60,7 @@ const CreateTokoHandler = async (req, h) => {
     });
 
     const newBarcodeId = new mongoose.Types.ObjectId();
+    const newGambarId = new mongoose.Types.ObjectId();
     const newTokoId = new mongoose.Types.ObjectId();
 
     const createNewToko = new TokoModel({
@@ -64,11 +68,18 @@ const CreateTokoHandler = async (req, h) => {
       nama_toko: nama_toko,
       alamat_toko: alamat_toko,
       pemilik_toko: user.nama_user,
+      gambar: newGambarId,
       barcodes: newBarcodeId,
     });
 
     const createNewBarcode = new BarcodeModel({
       _id: newBarcodeId,
+      owners_identity: `${newTokoId}|${nama_toko}`,
+    });
+
+    const generateUrlGambar = `${BASE_URL}${imageName}`;
+    const createNewGambar = new GambarModel({
+      _id: newGambarId,
       link_gambar: generateUrlGambar,
     });
 
@@ -76,13 +87,14 @@ const CreateTokoHandler = async (req, h) => {
 
     const updateUser = await UserModel.findByIdAndUpdate(
       id,
-      { $push: { toko: newTokoId } },
+      { $push: { toko: newTokoId, gambar: newGambarId } },
       { new: true, useFindAndModify: false }
     );
 
     await user.save();
     await updateUser.save();
     await createNewToko.save();
+    await createNewGambar.save();
     await createNewBarcode.save();
 
     const response = h.response({
@@ -96,7 +108,7 @@ const CreateTokoHandler = async (req, h) => {
       status: "failed",
       message: `Terjadi kesalahan karena ${error.message} , silahkan coba lagi`,
     });
-    response.code(400);
+    response.code(500);
     return response;
   }
 };

@@ -48,12 +48,6 @@ const CreateTokoHandler = async (req, h) => {
 
     const replacingPath = base64_image.replace(`data:${dataImage};base64,`, "");
     const imageName = `${randomChar(10)}.${ext}`;
-
-    // const imageData =
-    //   process.env.DEV === "Yes"
-    //     ? `./src/image/${imageName}`
-    //     : `/tmp/${imageName}`;
-
     const imageData = path.join(__dirname, `../../image/${imageName}`);
 
     fs.writeFileSync(imageData, replacingPath, "base64", function (err) {
@@ -78,16 +72,14 @@ const CreateTokoHandler = async (req, h) => {
       barcodes: newBarcodeId,
     });
 
-    // Nanti untuk url barcode dibuat, ini baru url untuk profile user
-    const generateUrlGambar = `${BASE_URL}${imageName}`;
-
-    const createNewGambar = new GambarModel({
-      _id: newGambarId,
-      link_gambar: generateUrlGambar,
-    });
-
     const createNewBarcode = new BarcodeModel({
       _id: newBarcodeId,
+      owners_identity: `${newTokoId}|${nama_toko}`,
+    });
+
+    const generateUrlGambar = `${BASE_URL}${imageName}`;
+    const createNewGambar = new GambarModel({
+      _id: newGambarId,
       link_gambar: generateUrlGambar,
     });
 
