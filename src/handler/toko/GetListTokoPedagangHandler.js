@@ -17,7 +17,7 @@ const GetListTokoPedagangHandler = async (req, h) => {
     const response = h.response({
       status: "success",
       message: "Berhasil mengambil data toko",
-      data: user,
+      data: user.toko,
     });
     response.code(200);
     return response;
