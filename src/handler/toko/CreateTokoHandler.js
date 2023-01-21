@@ -5,6 +5,7 @@ const randomChar = require("../../utils/randomChar");
 const fs = require("fs");
 const mongoose = require("mongoose");
 const BASE_URL = require("../../config/baseurl");
+const { GambarModel } = require("../../models/gambarModel");
 
 const CreateTokoHandler = async (req, h) => {
   try {
@@ -65,6 +66,7 @@ const CreateTokoHandler = async (req, h) => {
     });
 
     const newBarcodeId = new mongoose.Types.ObjectId();
+    const newGambarId = new mongoose.Types.ObjectId();
     const newTokoId = new mongoose.Types.ObjectId();
 
     const createNewToko = new TokoModel({
@@ -72,10 +74,17 @@ const CreateTokoHandler = async (req, h) => {
       nama_toko: nama_toko,
       alamat_toko: alamat_toko,
       pemilik_toko: user.nama_user,
+      gambar: newGambarId,
       barcodes: newBarcodeId,
     });
 
+    // Nanti untuk url barcode dibuat, ini baru url untuk profile user
     const generateUrlGambar = `${BASE_URL}${imageName}`;
+
+    const createNewGambar = new GambarModel({
+      _id: newGambarId,
+      link_gambar: generateUrlGambar,
+    });
 
     const createNewBarcode = new BarcodeModel({
       _id: newBarcodeId,
@@ -86,13 +95,14 @@ const CreateTokoHandler = async (req, h) => {
 
     const updateUser = await UserModel.findByIdAndUpdate(
       id,
-      { $push: { toko: newTokoId } },
+      { $push: { toko: newTokoId, gambar: newGambarId } },
       { new: true, useFindAndModify: false }
     );
 
     await user.save();
     await updateUser.save();
     await createNewToko.save();
+    await createNewGambar.save();
     await createNewBarcode.save();
 
     const response = h.response({
