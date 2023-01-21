@@ -1,6 +1,6 @@
 const { UserModel } = require("../../models/userModel");
 
-const GetUserBydIdHandler = async () => {
+const GetUserBydIdHandler = async (req, h) => {
   try {
     const { id } = req.params;
     const user = await UserModel.findById(id);
