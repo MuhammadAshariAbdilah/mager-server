@@ -6,11 +6,20 @@ const fs = require("fs");
 const mongoose = require("mongoose");
 const BASE_URL = require("../../config/baseurl");
 const { GambarModel } = require("../../models/gambarModel");
+const { BarangModel } = require("../../models/barangModel");
 
 const CreateTokoHandler = async (req, h) => {
   try {
     const { id } = req.params;
-    const { nama_toko, alamat_toko, base64_image } = req.payload;
+    const {
+      nama_toko,
+      alamat_toko,
+      foto_toko,
+      foto_barang,
+      nama_barang,
+      harga_barang,
+      jenis_barang,
+    } = req.payload;
     const user = await UserModel.findById(id);
 
     if (!user) {
@@ -34,19 +43,32 @@ const CreateTokoHandler = async (req, h) => {
 
     let ext;
     let dataImage;
+    let extSecond;
+    let dataImageSecond;
 
-    if (base64_image.includes("image/png")) {
+    if (foto_toko.includes("image/png")) {
       dataImage = "image/png";
       ext = "png";
-    } else if (base64_image.includes("image/jpg")) {
+    } else if (foto_toko.includes("image/jpg")) {
       dataImage = "image/jpg";
       ext = "jpg";
-    } else if (base64_image.includes("image/jpeg")) {
+    } else if (foto_toko.includes("image/jpeg")) {
       dataImage = "image/jpeg";
       ext = "jpeg";
     }
 
-    const replacingPath = base64_image.replace(`data:${dataImage};base64,`, "");
+    if (foto_barang.includes("image/png")) {
+      dataImageSecond = "image/png";
+      extSecond = "png";
+    } else if (foto_barang.includes("image/jpg")) {
+      dataImageSecond = "image/jpg";
+      extSecond = "jpg";
+    } else if (foto_barang.includes("image/jpeg")) {
+      dataImageSecond = "image/jpeg";
+      extSecond = "jpeg";
+    }
+
+    const replacingPath = foto_toko.replace(`data:${dataImage};base64,`, "");
     const imageName = `${randomChar(10)}.${ext}`;
     const imageData = path.join(__dirname, `../../image/${imageName}`);
 
@@ -59,9 +81,35 @@ const CreateTokoHandler = async (req, h) => {
       return response;
     });
 
+    const replacingPathSecond = foto_barang.replace(
+      `data:${dataImageSecond};base64,`,
+      ""
+    );
+    const imageNameSecond = `${randomChar(10)}.${extSecond}`;
+    const imageDataSecond = path.join(
+      __dirname,
+      `../../image/${imageNameSecond}`
+    );
+
+    fs.writeFileSync(
+      imageDataSecond,
+      replacingPathSecond,
+      "base64",
+      function (err) {
+        const response = h.response({
+          status: "failed",
+          message: `Terjadi kesalahan ${err.message}, silahkan coba lagi`,
+        });
+        response.code(500);
+        return response;
+      }
+    );
+
     const newBarcodeId = new mongoose.Types.ObjectId();
     const newGambarId = new mongoose.Types.ObjectId();
+    const newGambarSecondId = new mongoose.Types.ObjectId();
     const newTokoId = new mongoose.Types.ObjectId();
+    const newBarangId = new mongoose.Types.ObjectId();
 
     const createNewToko = new TokoModel({
       _id: newTokoId,
@@ -75,6 +123,14 @@ const CreateTokoHandler = async (req, h) => {
     const createNewBarcode = new BarcodeModel({
       _id: newBarcodeId,
       owners_identity: `${newTokoId}|${nama_toko}`,
+    });
+
+    const createNewBarang = new BarangModel({
+      _id: newBarangId,
+      nama_barang: nama_barang,
+      harga_barang: harga_barang,
+      jenis_barang: jenis_barang,
+      gambar: newGambarSecondId,
     });
 
     const generateUrlGambar = `${BASE_URL}${imageName}`;
@@ -96,6 +152,7 @@ const CreateTokoHandler = async (req, h) => {
     await createNewToko.save();
     await createNewGambar.save();
     await createNewBarcode.save();
+    await createNewBarang.save();
 
     const response = h.response({
       status: "success",

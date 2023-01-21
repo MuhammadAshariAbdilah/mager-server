@@ -1,35 +1,29 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const TokoModel = mongoose.model(
-  "Toko",
+const BarangModel = mongoose.model(
+  "Barang",
   new Schema({
     _id: Schema.Types.ObjectId,
-    nama_toko: {
+    nama_barang: {
       type: String,
       default: "",
     },
-    alamat_toko: {
+    harga_barang: {
+      type: Number,
+      default: "",
+    },
+    jenis_barang: {
       type: String,
       default: "",
     },
-    pemilik_toko: {
-      type: String,
-      default: "",
+    toko: {
+      type: Schema.Types.ObjectId,
+      ref: "Toko",
     },
-    barcodes: {
-      type: String,
-      ref: "Barcode",
-    },
-    barang: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Barang",
-      },
-    ],
     gambar: [
       {
-        type: String,
+        type: Schema.Types.ObjectId,
         ref: "Gambar",
       },
     ],
@@ -37,5 +31,5 @@ const TokoModel = mongoose.model(
 );
 
 module.exports = {
-  TokoModel,
+  BarangModel,
 };
